@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { ScrollReveal, RevealItem } from "@/components/motion/ScrollReveal";
 import { LightboxModal } from "@/components/ui/LightboxModal";
 import { PillButton } from "@/components/ui/PillButton";
+import ImageGallery from "@/components/ui/image-gallery";
 
 const GALLERY_ITEMS = [
   {
@@ -108,38 +109,18 @@ export default function GalleryPage() {
         </ScrollReveal>
       </section>
 
-      {/* Gallery Columns Grid */}
-      <section className="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto pb-24 w-full">
-        <div className="columns-1 sm:columns-2 lg:columns-3 gap-8 space-y-8">
-          {filteredItems.map((item) => {
-            const originalIdx = GALLERY_ITEMS.findIndex((x) => x.id === item.id);
-            return (
-              <div
-                key={item.id}
-                onClick={() => setLightboxIndex(originalIdx)}
-                className="modern-card group relative rounded-[24px] overflow-hidden bg-surface-container-lowest shadow-soft hover:shadow-soft-hover hover:-translate-y-2 transition-all duration-500 cursor-pointer border border-outline-variant/15 break-inside-avoid inline-block w-full"
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  className="w-full h-auto object-cover transform group-hover:scale-108 transition-transform duration-700 ease-out"
-                  alt={item.title}
-                  src={item.src}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-deep-forest/90 via-deep-forest/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400 flex flex-col justify-end p-8 z-10 space-y-2">
-                  <span className={`inline-block px-3.5 py-1 rounded-full text-xs font-bold w-max shadow-sm ${item.pillBg}`}>
-                    {item.category}
-                  </span>
-                  <h3 className="font-headline-sm text-ethereal-white font-bold text-2xl translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75">
-                    {item.title}
-                  </h3>
-                  <p className="font-body-md text-ethereal-white/85 translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-100 text-sm">
-                    {item.desc}
-                  </p>
-                </div>
-              </div>
-            );
-          })}
-        </div>
+      {/* Gallery Expandable Accordion */}
+      <section className="px-4 md:px-8 max-w-7xl mx-auto pb-24 w-full">
+        <ImageGallery
+          items={filteredItems}
+          onSelect={(idx) => {
+            const selectedItem = filteredItems[idx];
+            if (selectedItem) {
+              const originalIdx = GALLERY_ITEMS.findIndex((x) => x.id === selectedItem.id);
+              if (originalIdx !== -1) setLightboxIndex(originalIdx);
+            }
+          }}
+        />
 
         <div className="mt-16 text-center">
           <PillButton variant="secondary" className="!inline-flex gap-2 items-center">
