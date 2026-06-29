@@ -39,12 +39,14 @@ const NAV_LINKS: NavLink[] = [
 export function Header() {
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isScrolledPastHero, setIsScrolledPastHero] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [hoveredDropdown, setHoveredDropdown] = useState<string | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
+      setIsScrolledPastHero(window.scrollY > 550);
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
@@ -57,16 +59,20 @@ export function Header() {
     setHoveredDropdown(null);
   }, [pathname]);
 
+  const isTransparentHero = pathname === "/" && !isScrolledPastHero;
+
   return (
     <header
-      className="sticky top-4 left-0 right-0 w-full font-label-lg z-50 px-4 sm:px-6 pointer-events-none transition-all duration-300"
+      className={`${pathname === "/" ? "fixed" : "sticky"} top-4 left-0 right-0 w-full font-label-lg z-50 px-4 sm:px-6 pointer-events-none transition-all duration-300`}
       id="main-nav"
     >
       <div
-        className={`pointer-events-auto mx-auto max-w-[1380px] rounded-full border border-outline-variant/30 flex justify-between items-center px-6 sm:px-8 py-2.5 transition-all duration-300 ${
-          isScrolled
-            ? "bg-ethereal-white/95 dark:bg-deep-forest/95 backdrop-blur-2xl shadow-xl"
-            : "bg-ethereal-white/85 dark:bg-deep-forest/85 backdrop-blur-md shadow-md"
+        className={`pointer-events-auto mx-auto max-w-[1380px] rounded-full border flex justify-between items-center px-6 sm:px-8 py-2.5 transition-all duration-300 ${
+          isTransparentHero
+            ? "bg-black/25 hover:bg-black/40 backdrop-blur-md shadow-lg border-white/20 text-white"
+            : isScrolled
+            ? "bg-ethereal-white/95 dark:bg-deep-forest/95 backdrop-blur-2xl shadow-xl border-outline-variant/30 text-on-surface"
+            : "bg-ethereal-white/85 dark:bg-deep-forest/85 backdrop-blur-md shadow-md border-outline-variant/30 text-on-surface"
         }`}
       >
         <Link
@@ -77,13 +83,17 @@ export function Header() {
           <img
             src="/logo-horizontal.png"
             alt="Dhara Foundations"
-            className="h-9 sm:h-10 md:h-11 w-auto object-contain block dark:hidden drop-shadow-sm transition-transform"
+            className={`h-9 sm:h-10 md:h-11 w-auto object-contain transition-transform ${
+              isTransparentHero ? "hidden" : "block dark:hidden drop-shadow-sm"
+            }`}
           />
           {/* Dark Mode Logo */}
           <img
             src="/logo-horizontal-dark.png"
             alt="Dhara Foundations"
-            className="h-9 sm:h-10 md:h-11 w-auto object-contain hidden dark:block drop-shadow-sm transition-transform"
+            className={`h-9 sm:h-10 md:h-11 w-auto object-contain transition-transform ${
+              isTransparentHero ? "block drop-shadow-md" : "hidden dark:block drop-shadow-sm"
+            }`}
           />
         </Link>
 
@@ -106,7 +116,11 @@ export function Header() {
                     href={link.href}
                     className={`relative inline-flex items-center gap-1 px-4 py-2 rounded-full transition-all text-sm xl:text-base ${
                       isTopActive
-                        ? "bg-primary/10 dark:bg-saffron-glow/15 text-primary dark:text-saffron-glow font-bold"
+                        ? isTransparentHero
+                          ? "bg-white/20 text-saffron-glow font-bold"
+                          : "bg-primary/10 dark:bg-saffron-glow/15 text-primary dark:text-saffron-glow font-bold"
+                        : isTransparentHero
+                        ? "text-white/90 hover:text-saffron-glow hover:bg-white/10 font-semibold"
                         : "text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-saffron-glow hover:bg-surface-container/50 font-semibold"
                     }`}
                   >
@@ -179,7 +193,11 @@ export function Header() {
                 href={link.href}
                 className={`relative px-4 py-2 rounded-full transition-all text-sm xl:text-base ${
                   isTopActive
-                    ? "bg-primary/10 dark:bg-saffron-glow/15 text-primary dark:text-saffron-glow font-bold"
+                    ? isTransparentHero
+                      ? "bg-white/20 text-saffron-glow font-bold"
+                      : "bg-primary/10 dark:bg-saffron-glow/15 text-primary dark:text-saffron-glow font-bold"
+                    : isTransparentHero
+                    ? "text-white/90 hover:text-saffron-glow hover:bg-white/10 font-semibold"
                     : "text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-saffron-glow hover:bg-surface-container/50 font-semibold"
                 }`}
               >
@@ -220,7 +238,11 @@ export function Header() {
         {/* Mobile menu button */}
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="lg:hidden text-on-surface dark:text-ethereal-white p-2 rounded-full hover:bg-surface-container transition-colors"
+          className={`lg:hidden p-2 rounded-full transition-colors ${
+            isTransparentHero
+              ? "text-white hover:bg-white/10"
+              : "text-on-surface dark:text-ethereal-white hover:bg-surface-container"
+          }`}
           aria-label="Toggle Navigation Menu"
         >
           <span className="material-symbols-outlined text-2xl">

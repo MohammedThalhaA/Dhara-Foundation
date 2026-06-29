@@ -290,32 +290,30 @@ export default function EventsPage() {
             <motion.div 
               initial={{ opacity: 0, scale: shouldReduceMotion ? 1 : 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
+              whileHover={shouldReduceMotion ? {} : { scale: 1.02 }}
               transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-              className="relative rounded-3xl overflow-hidden shadow-2xl border-8 border-white bg-surface-container aspect-[4/3] sm:aspect-[16/10]"
+              className="relative rounded-3xl overflow-hidden shadow-2xl border-8 border-white bg-surface-container aspect-[4/3] sm:aspect-[16/10] cursor-pointer"
             >
-              <img 
+              <motion.img 
+                whileHover={shouldReduceMotion ? {} : { scale: 1.05 }}
+                transition={{ duration: 0.6, ease: "easeOut" }}
                 src="/images/event-2.png" 
                 alt="Dhara Gatherings" 
                 className="w-full h-full object-cover object-center"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-deep-forest/60 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-deep-forest/60 via-transparent to-transparent pointer-events-none" />
             </motion.div>
 
             {/* (a) Circular Rotating Badge (Top Right) */}
-            <style jsx>{`
-              @keyframes spinSlow {
-                to { transform: rotate(360deg); }
-              }
-              .animate-spin-slow {
-                animation: spinSlow 14s linear infinite;
-              }
-            `}</style>
-            <div 
+            <motion.div 
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ type: "spring", stiffness: 300, damping: 15 }}
               onClick={() => scrollToSectionAndFilter("All")}
-              className="absolute -top-6 -right-4 sm:-top-8 sm:-right-6 w-28 h-28 sm:w-36 sm:h-36 rounded-full bg-deep-forest border-4 border-[#F9F7F2] shadow-xl flex items-center justify-center cursor-pointer group hover:scale-105 transition-transform z-20"
+              className="absolute -top-6 -right-4 sm:-top-8 sm:-right-6 w-28 h-28 sm:w-36 sm:h-36 rounded-full bg-deep-forest border-4 border-[#F9F7F2] shadow-xl flex items-center justify-center cursor-pointer group z-20"
             >
-              {/* Rotating Text Ring - disabled if reduced motion */}
-              <div className={`absolute inset-2 ${shouldReduceMotion ? "" : "animate-spin-slow"} pointer-events-none flex items-center justify-center`}>
+              {/* Rotating Text Ring Wheel */}
+              <div className="absolute inset-2 pointer-events-none flex items-center justify-center group-hover:[animation:spin_8s_linear_infinite]">
                 <svg className="w-full h-full" viewBox="0 0 100 100">
                   <path id="circlePath" d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0" fill="none" />
                   <text className="text-[10.5px] font-mono font-bold uppercase fill-saffron-glow tracking-[2.2px]">
@@ -323,18 +321,19 @@ export default function EventsPage() {
                   </text>
                 </svg>
               </div>
-              {/* Static Center Icon */}
-              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary text-white flex items-center justify-center shadow-inner group-hover:bg-saffron-glow group-hover:text-deep-forest transition-colors">
+              {/* Center Icon */}
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary text-white flex items-center justify-center shadow-inner group-hover:bg-saffron-glow group-hover:text-deep-forest group-hover:scale-110 transition-all duration-300">
                 <ArrowRight size={20} />
               </div>
-            </div>
+            </motion.div>
 
             {/* (b) Floating Stat Card (Bottom Right) */}
             <motion.div 
               initial={{ opacity: 0, scale: shouldReduceMotion ? 1 : 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={shouldReduceMotion ? { duration: 0.5, delay: 0.6 } : { type: "spring", stiffness: 200, damping: 15, delay: 0.6 }}
-              className="absolute -bottom-6 sm:-bottom-8 left-4 sm:left-auto sm:right-8 bg-white/95 backdrop-blur-md p-4 sm:p-5 rounded-2xl shadow-xl border border-outline-variant/20 flex items-center gap-4 z-20 max-w-xs sm:max-w-sm"
+              animate={shouldReduceMotion ? { opacity: 1, scale: 1 } : { opacity: 1, scale: 1, y: [0, -8, 0] }}
+              transition={shouldReduceMotion ? { duration: 0.5, delay: 0.6 } : { opacity: { duration: 0.5, delay: 0.6 }, scale: { type: "spring", stiffness: 200, damping: 15, delay: 0.6 }, y: { repeat: Infinity, duration: 4.5, ease: "easeInOut", delay: 1 } }}
+              whileHover={shouldReduceMotion ? {} : { scale: 1.06 }}
+              className="absolute -bottom-6 sm:-bottom-8 left-4 sm:left-auto sm:right-8 bg-white/95 backdrop-blur-md p-4 sm:p-5 rounded-2xl shadow-xl border border-outline-variant/20 flex items-center gap-4 z-20 max-w-xs sm:max-w-sm cursor-pointer"
             >
               <div className="flex -space-x-3 shrink-0 overflow-hidden">
                 <img className="inline-block h-10 w-10 rounded-full ring-2 ring-white object-cover" src="/images/event-1.png" alt="Volunteer" />
@@ -392,13 +391,13 @@ export default function EventsPage() {
               hidden: { opacity: 0, scale: shouldReduceMotion ? 1 : 0.92 },
               visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } }
             }}
-            whileHover={shouldReduceMotion ? {} : { scale: 1.04 }}
+            whileHover={shouldReduceMotion ? {} : { scale: 1.03, y: -4 }}
             transition={{ duration: 0.3 }}
-            className="sm:col-span-2 relative rounded-2xl overflow-hidden shadow-md group"
+            className="sm:col-span-2 relative rounded-2xl overflow-hidden shadow-md hover:shadow-xl group cursor-pointer"
           >
-            <img src="/images/gallery-1.png" alt="Dhara Gatherings" className="w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-t from-deep-forest/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity p-6 flex items-end">
-              <span className="text-white font-bold text-lg">Girivalam Seva Camp</span>
+            <img src="/images/gallery-1.png" alt="Dhara Gatherings" className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500 ease-out" />
+            <div className="absolute inset-0 bg-gradient-to-t from-deep-forest/90 via-deep-forest/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-6 flex items-end">
+              <span className="text-white font-bold text-lg translate-y-3 group-hover:translate-y-0 transition-transform duration-300">Girivalam Seva Camp</span>
             </div>
           </motion.div>
 
@@ -408,11 +407,14 @@ export default function EventsPage() {
               hidden: { opacity: 0, scale: shouldReduceMotion ? 1 : 0.92 },
               visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } }
             }}
-            whileHover={shouldReduceMotion ? {} : { scale: 1.04 }}
+            whileHover={shouldReduceMotion ? {} : { scale: 1.04, y: -4 }}
             transition={{ duration: 0.3 }}
-            className="relative rounded-2xl overflow-hidden shadow-md group"
+            className="relative rounded-2xl overflow-hidden shadow-md hover:shadow-xl group cursor-pointer"
           >
-            <img src="/images/event-1.png" alt="Anna Daanam" className="w-full h-full object-cover" />
+            <img src="/images/event-1.png" alt="Anna Daanam" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-out" />
+            <div className="absolute inset-0 bg-gradient-to-t from-deep-forest/90 via-deep-forest/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-6 flex items-end">
+              <span className="text-white font-bold text-base translate-y-3 group-hover:translate-y-0 transition-transform duration-300">Anna Daanam Drive</span>
+            </div>
           </motion.div>
 
           {/* Item 3 */}
@@ -421,11 +423,14 @@ export default function EventsPage() {
               hidden: { opacity: 0, scale: shouldReduceMotion ? 1 : 0.92 },
               visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } }
             }}
-            whileHover={shouldReduceMotion ? {} : { scale: 1.04 }}
+            whileHover={shouldReduceMotion ? {} : { scale: 1.04, y: -4 }}
             transition={{ duration: 0.3 }}
-            className="relative rounded-2xl overflow-hidden shadow-md group"
+            className="relative rounded-2xl overflow-hidden shadow-md hover:shadow-xl group cursor-pointer"
           >
-            <img src="/images/event-3.png" alt="Temple Restoration" className="w-full h-full object-cover" />
+            <img src="/images/event-3.png" alt="Temple Restoration" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-out" />
+            <div className="absolute inset-0 bg-gradient-to-t from-deep-forest/90 via-deep-forest/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-6 flex items-end">
+              <span className="text-white font-bold text-base translate-y-3 group-hover:translate-y-0 transition-transform duration-300">Temple Consecration</span>
+            </div>
           </motion.div>
 
           {/* Item 4 */}
@@ -434,11 +439,14 @@ export default function EventsPage() {
               hidden: { opacity: 0, scale: shouldReduceMotion ? 1 : 0.92 },
               visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } }
             }}
-            whileHover={shouldReduceMotion ? {} : { scale: 1.04 }}
+            whileHover={shouldReduceMotion ? {} : { scale: 1.04, y: -4 }}
             transition={{ duration: 0.3 }}
-            className="relative rounded-2xl overflow-hidden shadow-md group"
+            className="relative rounded-2xl overflow-hidden shadow-md hover:shadow-xl group cursor-pointer"
           >
-            <img src="/images/gallery-2.png" alt="Tribal School Outreach" className="w-full h-full object-cover" />
+            <img src="/images/gallery-2.png" alt="Tribal School Outreach" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-out" />
+            <div className="absolute inset-0 bg-gradient-to-t from-deep-forest/90 via-deep-forest/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-6 flex items-end">
+              <span className="text-white font-bold text-base translate-y-3 group-hover:translate-y-0 transition-transform duration-300">Tribal School Support</span>
+            </div>
           </motion.div>
 
           {/* Item 5: Interactive Overlay Card with Pill Button */}
@@ -448,18 +456,18 @@ export default function EventsPage() {
               visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } }
             }}
             whileHover="hover"
-            className="sm:col-span-2 relative rounded-2xl overflow-hidden shadow-lg bg-deep-forest border border-white/10 group flex flex-col justify-center items-center p-8 text-center text-white"
+            className="sm:col-span-2 relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl bg-deep-forest border border-white/10 group flex flex-col justify-center items-center p-8 text-center text-white transition-shadow duration-300"
           >
             <motion.img 
-              variants={{ hover: { scale: shouldReduceMotion ? 1 : 1.04 } }}
-              transition={{ duration: 0.3 }}
+              variants={{ hover: { scale: shouldReduceMotion ? 1 : 1.06 } }}
+              transition={{ duration: 0.5 }}
               src="/images/banner.png" 
               alt="Gallery Background" 
               className="absolute inset-0 w-full h-full object-cover opacity-25" 
             />
             <motion.div 
-              variants={{ hover: { y: shouldReduceMotion ? 0 : -4 } }}
-              transition={{ duration: 0.2 }}
+              variants={{ hover: { y: shouldReduceMotion ? 0 : -6 } }}
+              transition={{ duration: 0.3 }}
               className="relative z-10 space-y-4 max-w-sm"
             >
               <h3 className="font-headline-sm text-2xl font-bold">Witness Our Continuing Journey</h3>
@@ -481,11 +489,14 @@ export default function EventsPage() {
               hidden: { opacity: 0, scale: shouldReduceMotion ? 1 : 0.92 },
               visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } }
             }}
-            whileHover={shouldReduceMotion ? {} : { scale: 1.04 }}
+            whileHover={shouldReduceMotion ? {} : { scale: 1.04, y: -4 }}
             transition={{ duration: 0.3 }}
-            className="relative rounded-2xl overflow-hidden shadow-md group"
+            className="relative rounded-2xl overflow-hidden shadow-md hover:shadow-xl group cursor-pointer"
           >
-            <img src="/images/gallery-3.png" alt="Women Empowerment" className="w-full h-full object-cover" />
+            <img src="/images/gallery-3.png" alt="Women Empowerment" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-out" />
+            <div className="absolute inset-0 bg-gradient-to-t from-deep-forest/90 via-deep-forest/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-6 flex items-end">
+              <span className="text-white font-bold text-base translate-y-3 group-hover:translate-y-0 transition-transform duration-300">Women Empowerment Circle</span>
+            </div>
           </motion.div>
 
         </motion.div>
@@ -521,7 +532,7 @@ export default function EventsPage() {
             className="grid grid-cols-2 md:grid-cols-4 gap-8 divide-x divide-[#D9CBB0]/60 text-center"
           >
             {/* Stat 1 */}
-            <motion.div variants={fadeUpVariant} className="p-4 space-y-2">
+            <motion.div variants={fadeUpVariant} whileHover={shouldReduceMotion ? {} : { scale: 1.08, y: -4 }} transition={{ type: "spring", stiffness: 300 }} className="p-4 space-y-2 cursor-pointer rounded-2xl hover:bg-white/50 transition-colors">
               <div className="font-headline-md text-3xl sm:text-4xl lg:text-5xl font-bold text-primary">
                 <CounterItem target={2024} shouldReduceMotion={shouldReduceMotion} />
               </div>
@@ -531,7 +542,7 @@ export default function EventsPage() {
             </motion.div>
 
             {/* Stat 2 */}
-            <motion.div variants={fadeUpVariant} className="p-4 space-y-2">
+            <motion.div variants={fadeUpVariant} whileHover={shouldReduceMotion ? {} : { scale: 1.08, y: -4 }} transition={{ type: "spring", stiffness: 300 }} className="p-4 space-y-2 cursor-pointer rounded-2xl hover:bg-white/50 transition-colors">
               <div className="font-headline-md text-3xl sm:text-4xl lg:text-5xl font-bold text-primary">
                 <CounterItem target={4} shouldReduceMotion={shouldReduceMotion} />
               </div>
@@ -541,7 +552,7 @@ export default function EventsPage() {
             </motion.div>
 
             {/* Stat 3 - [CLIENT TO CONFIRM] -> static render per instruction */}
-            <motion.div variants={fadeUpVariant} className="p-4 space-y-2">
+            <motion.div variants={fadeUpVariant} whileHover={shouldReduceMotion ? {} : { scale: 1.08, y: -4 }} transition={{ type: "spring", stiffness: 300 }} className="p-4 space-y-2 cursor-pointer rounded-2xl hover:bg-white/50 transition-colors">
               <div className="font-headline-md text-3xl sm:text-4xl lg:text-5xl font-bold text-primary">
                 <CounterItem target={null} staticText="25+" shouldReduceMotion={shouldReduceMotion} />
               </div>
@@ -551,7 +562,7 @@ export default function EventsPage() {
             </motion.div>
 
             {/* Stat 4 - [CLIENT TO CONFIRM] -> static render per instruction */}
-            <motion.div variants={fadeUpVariant} className="p-4 space-y-2">
+            <motion.div variants={fadeUpVariant} whileHover={shouldReduceMotion ? {} : { scale: 1.08, y: -4 }} transition={{ type: "spring", stiffness: 300 }} className="p-4 space-y-2 cursor-pointer rounded-2xl hover:bg-white/50 transition-colors">
               <div className="font-headline-md text-3xl sm:text-4xl lg:text-5xl font-bold text-primary">
                 <CounterItem target={null} staticText="10,000+" shouldReduceMotion={shouldReduceMotion} />
               </div>
@@ -596,25 +607,29 @@ export default function EventsPage() {
               key={idx}
               variants={cardFadeUpVariant}
               whileHover={shouldReduceMotion ? {} : "hover"}
-              className="bg-white rounded-3xl overflow-hidden border border-[#D9CBB0]/50 shadow-sm flex flex-col group cursor-pointer"
+              className="bg-white rounded-3xl overflow-hidden border border-[#D9CBB0]/50 shadow-sm hover:shadow-2xl transition-shadow flex flex-col group cursor-pointer"
               onClick={() => scrollToSectionAndFilter(cat.filterTag)}
             >
               <motion.div 
-                variants={{ hover: { y: shouldReduceMotion ? 0 : -6, boxShadow: "0 20px 40px -10px rgba(0, 50, 43, 0.12)" } }}
-                transition={{ duration: 0.25, ease: "easeOut" }}
+                variants={{ hover: { y: shouldReduceMotion ? 0 : -8 } }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
                 className="flex flex-col h-full bg-white rounded-3xl overflow-hidden"
               >
                 <div className="relative h-56 overflow-hidden bg-surface-container shrink-0">
                   <motion.img 
-                    variants={{ hover: { scale: shouldReduceMotion ? 1 : 1.03 } }}
-                    transition={{ duration: 0.25 }}
+                    variants={{ hover: { scale: shouldReduceMotion ? 1 : 1.08 } }}
+                    transition={{ duration: 0.4, ease: "easeOut" }}
                     src={cat.img} 
                     alt={cat.title} 
-                    className="w-full h-full object-cover ease-out"
+                    className="w-full h-full object-cover"
                   />
-                  <div className="absolute top-4 left-4 bg-deep-forest/90 text-saffron-glow px-3 py-1 rounded-full text-xs font-label-md font-bold tracking-wider uppercase">
+                  <motion.div 
+                    variants={{ hover: { scale: shouldReduceMotion ? 1 : 1.08, y: -2 } }}
+                    transition={{ type: "spring", stiffness: 400 }}
+                    className="absolute top-4 left-4 bg-deep-forest/95 text-saffron-glow px-3.5 py-1.5 rounded-full text-xs font-label-md font-bold tracking-wider uppercase shadow-md"
+                  >
                     {cat.filterTag}
-                  </div>
+                  </motion.div>
                 </div>
 
                 <div className="p-6 sm:p-8 flex flex-col flex-1 justify-between space-y-6">
@@ -630,10 +645,11 @@ export default function EventsPage() {
                   {/* Consistent Outline Button -> Solid on Hover with Icon Shift */}
                   <motion.button 
                     whileHover="btnHover"
-                    className="w-full py-3 rounded-full border-[1.5px] border-primary text-primary group-hover:bg-primary group-hover:text-white font-label-lg font-bold text-sm transition-colors duration-250 flex items-center justify-center gap-2"
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full py-3 rounded-full border-[1.5px] border-primary text-primary group-hover:bg-primary group-hover:text-white font-label-lg font-bold text-sm transition-all duration-300 flex items-center justify-center gap-2 shadow-sm group-hover:shadow"
                   >
                     <span>View Events</span>
-                    <motion.span variants={{ btnHover: { x: shouldReduceMotion ? 0 : 4 }, hover: { x: shouldReduceMotion ? 0 : 4 } }}>
+                    <motion.span variants={{ btnHover: { x: shouldReduceMotion ? 0 : 6 }, hover: { x: shouldReduceMotion ? 0 : 6 } }} transition={{ type: "spring", stiffness: 400 }}>
                       <ArrowRight size={16} />
                     </motion.span>
                   </motion.button>
@@ -690,16 +706,18 @@ export default function EventsPage() {
                 hidden: { opacity: 0, y: shouldReduceMotion ? 0 : 30 },
                 visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.1, ease: "easeOut" } }
               }}
-              className="bg-white/5 border border-white/10 p-6 rounded-2xl backdrop-blur-sm space-y-4 relative"
+              whileHover={shouldReduceMotion ? {} : { scale: 1.04, y: -6 }}
+              transition={{ type: "spring", stiffness: 300 }}
+              className="bg-white/5 border border-white/10 p-6 rounded-2xl backdrop-blur-sm space-y-4 relative group cursor-pointer hover:bg-white/10 transition-colors"
             >
               <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 0.4 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
-                <Quote className="text-primary absolute top-4 right-4" size={32} />
+                <Quote className="text-primary absolute top-4 right-4 group-hover:scale-125 group-hover:rotate-12 transition-transform duration-300" size={32} />
               </motion.div>
               <p className="font-body-sm text-xs sm:text-sm leading-relaxed text-ethereal-white/90 italic">
                 &ldquo;The footwear and school supplies distributed to our Javadhu Hills students brought immense joy. Dhara Foundations serves with genuine devotion.&rdquo;
               </p>
               <div className="flex items-center gap-3 pt-2 border-t border-white/10">
-                <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center font-bold text-xs text-white">
+                <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center font-bold text-xs text-white group-hover:scale-110 transition-transform">
                   KR
                 </div>
                 <div>
@@ -718,16 +736,18 @@ export default function EventsPage() {
                 hidden: { opacity: 0, y: shouldReduceMotion ? 0 : 20 },
                 visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.35, ease: "easeOut" } }
               }}
-              className="bg-white/10 border-2 border-saffron-glow/50 p-6 sm:p-8 rounded-3xl backdrop-blur-md shadow-2xl space-y-4 relative md:-translate-y-4 z-10"
+              whileHover={shouldReduceMotion ? {} : { scale: 1.05, y: -10 }}
+              transition={{ type: "spring", stiffness: 300 }}
+              className="bg-white/10 border-2 border-saffron-glow/50 p-6 sm:p-8 rounded-3xl backdrop-blur-md shadow-2xl space-y-4 relative md:-translate-y-4 z-10 group cursor-pointer hover:border-saffron-glow transition-colors"
             >
               <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 0.4 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
-                <Quote className="text-saffron-glow absolute top-6 right-6" size={40} />
+                <Quote className="text-saffron-glow absolute top-6 right-6 group-hover:scale-125 group-hover:-rotate-12 transition-transform duration-300" size={40} />
               </motion.div>
               <p className="font-body-md text-sm leading-relaxed text-ethereal-white font-medium italic">
                 &ldquo;During our ancient temple Kumbabhishekam, Dhara volunteers stood by us with flawless organization and Anna Daanam support. Truly blessed work!&rdquo;
               </p>
               <div className="flex items-center gap-3 pt-4 border-t border-white/15">
-                <div className="w-10 h-10 rounded-full bg-saffron-glow text-deep-forest flex items-center justify-center font-bold text-sm">
+                <div className="w-10 h-10 rounded-full bg-saffron-glow text-deep-forest flex items-center justify-center font-bold text-sm group-hover:scale-110 transition-transform">
                   SS
                 </div>
                 <div>
@@ -746,16 +766,18 @@ export default function EventsPage() {
                 hidden: { opacity: 0, y: shouldReduceMotion ? 0 : 30 },
                 visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.2, ease: "easeOut" } }
               }}
-              className="bg-white/5 border border-white/10 p-6 rounded-2xl backdrop-blur-sm space-y-4 relative"
+              whileHover={shouldReduceMotion ? {} : { scale: 1.04, y: -6 }}
+              transition={{ type: "spring", stiffness: 300 }}
+              className="bg-white/5 border border-white/10 p-6 rounded-2xl backdrop-blur-sm space-y-4 relative group cursor-pointer hover:bg-white/10 transition-colors"
             >
               <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 0.4 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
-                <Quote className="text-primary absolute top-4 right-4" size={32} />
+                <Quote className="text-primary absolute top-4 right-4 group-hover:scale-125 group-hover:rotate-12 transition-transform duration-300" size={32} />
               </motion.div>
               <p className="font-body-sm text-xs sm:text-sm leading-relaxed text-ethereal-white/90 italic">
                 &ldquo;Volunteering at the Dhara Divine Awards showed me how deeply they care for unheralded traditional artists. It is an honor to be part of this mission.&rdquo;
               </p>
               <div className="flex items-center gap-3 pt-2 border-t border-white/10">
-                <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center font-bold text-xs text-white">
+                <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center font-bold text-xs text-white group-hover:scale-110 transition-transform">
                   AL
                 </div>
                 <div>
@@ -810,37 +832,41 @@ export default function EventsPage() {
             <motion.div 
               key={idx} 
               variants={cardFadeUpVariant}
-              whileHover="hover"
-              className="bg-white rounded-2xl border border-[#D9CBB0]/50 overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between group"
+              whileHover={shouldReduceMotion ? {} : "hover"}
+              className="bg-white rounded-2xl border border-[#D9CBB0]/50 overflow-hidden shadow-sm hover:shadow-2xl transition-shadow flex flex-col justify-between group cursor-pointer"
             >
-              <div>
-                <div className="h-48 overflow-hidden bg-surface-container relative">
-                  <motion.img 
-                    variants={{ hover: { scale: shouldReduceMotion ? 1 : 1.04 } }}
-                    transition={{ duration: 0.3 }}
-                    src={art.img} 
-                    alt={art.title} 
-                    className="w-full h-full object-cover" 
-                  />
-                </div>
-                <div className="p-6 space-y-3">
-                  <div className="text-xs font-mono text-primary font-bold">
-                    {art.date}
+              <motion.div variants={{ hover: { y: shouldReduceMotion ? 0 : -8 } }} transition={{ type: "spring", stiffness: 300, damping: 20 }} className="flex flex-col justify-between h-full">
+                <div>
+                  <div className="h-48 overflow-hidden bg-surface-container relative">
+                    <motion.img 
+                      variants={{ hover: { scale: shouldReduceMotion ? 1 : 1.08 } }}
+                      transition={{ duration: 0.4, ease: "easeOut" }}
+                      src={art.img} 
+                      alt={art.title} 
+                      className="w-full h-full object-cover" 
+                    />
                   </div>
-                  <h3 className="font-headline-sm text-lg font-bold text-deep-forest group-hover:text-primary transition-colors leading-snug">
-                    {art.title}
-                  </h3>
-                  <p className="font-body-sm text-on-surface-variant text-xs leading-relaxed line-clamp-3">
-                    {art.desc}
-                  </p>
+                  <div className="p-6 space-y-3">
+                    <div className="text-xs font-mono text-primary font-bold">
+                      {art.date}
+                    </div>
+                    <h3 className="font-headline-sm text-lg font-bold text-deep-forest group-hover:text-primary transition-colors leading-snug">
+                      {art.title}
+                    </h3>
+                    <p className="font-body-sm text-on-surface-variant text-xs leading-relaxed line-clamp-3">
+                      {art.desc}
+                    </p>
+                  </div>
                 </div>
-              </div>
-              <div className="px-6 pb-6 pt-2 border-t border-[#D9CBB0]/30 mt-4">
-                <Link href="/news" className="text-xs font-bold text-deep-forest group-hover:text-primary underline inline-flex items-center gap-1.5 transition-colors">
-                  <span>Read Article</span>
-                  <ArrowRight size={14} />
-                </Link>
-              </div>
+                <div className="px-6 pb-6 pt-2 border-t border-[#D9CBB0]/30 mt-4">
+                  <Link href="/news" className="text-xs font-bold text-deep-forest group-hover:text-primary inline-flex items-center gap-1.5 transition-colors">
+                    <span className="underline">Read Article</span>
+                    <motion.span variants={{ hover: { x: shouldReduceMotion ? 0 : 4 } }} transition={{ type: "spring", stiffness: 400 }}>
+                      <ArrowRight size={14} />
+                    </motion.span>
+                  </Link>
+                </div>
+              </motion.div>
             </motion.div>
           ))}
         </motion.div>
@@ -873,13 +899,14 @@ export default function EventsPage() {
             <div className="absolute left-8 top-12 bottom-12 w-0.5 bg-primary/30 md:hidden pointer-events-none" />
 
             {/* Feature 1 (Left) */}
-            <div className="relative flex flex-col md:flex-row items-center justify-start gap-6 md:w-2/3 ml-0">
+            <div className="relative flex flex-col md:flex-row items-center justify-start gap-6 md:w-2/3 ml-0 group cursor-pointer">
               <motion.div 
                 initial={{ scale: shouldReduceMotion ? 1 : 0 }}
                 whileInView={{ scale: 1 }}
                 viewport={{ once: true, amount: 0.4 }}
-                transition={shouldReduceMotion ? { duration: 0.2 } : { type: "spring", stiffness: 260, damping: 20 }}
-                className="w-16 h-16 rounded-full bg-primary text-white flex items-center justify-center shadow-lg shrink-0 z-10"
+                whileHover={shouldReduceMotion ? {} : { scale: 1.15, rotate: 12 }}
+                transition={{ type: "spring", stiffness: 300 }}
+                className="w-16 h-16 rounded-full bg-primary text-white flex items-center justify-center shadow-lg shrink-0 z-10 group-hover:bg-saffron-glow group-hover:text-deep-forest transition-colors"
               >
                 <Sparkles size={28} />
               </motion.div>
@@ -887,10 +914,11 @@ export default function EventsPage() {
                 initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.6, delay: 0.15, ease: "easeOut" }}
-                className="bg-white p-6 rounded-2xl shadow-sm border border-[#D9CBB0]/60 flex-1"
+                whileHover={shouldReduceMotion ? {} : { scale: 1.03, y: -4 }}
+                transition={{ duration: 0.3 }}
+                className="bg-white p-6 rounded-2xl shadow-sm hover:shadow-xl border border-[#D9CBB0]/60 flex-1 transition-shadow"
               >
-                <h3 className="font-headline-sm text-lg font-bold text-deep-forest mb-1">1. Cultural Authenticity</h3>
+                <h3 className="font-headline-sm text-lg font-bold text-deep-forest mb-1 group-hover:text-primary transition-colors">1. Cultural Authenticity</h3>
                 <p className="font-body-sm text-xs sm:text-sm text-on-surface-variant leading-relaxed">
                   Every ritual and celebration strictly follows authentic Sanatana Dharma scriptures and temple traditions, avoiding commercial dilution.
                 </p>
@@ -916,13 +944,14 @@ export default function EventsPage() {
             </div>
 
             {/* Feature 2 (Right) */}
-            <div className="relative flex flex-col md:flex-row-reverse items-center justify-start gap-6 md:w-2/3 md:ml-auto">
+            <div className="relative flex flex-col md:flex-row-reverse items-center justify-start gap-6 md:w-2/3 md:ml-auto group cursor-pointer">
               <motion.div 
                 initial={{ scale: shouldReduceMotion ? 1 : 0 }}
                 whileInView={{ scale: 1 }}
                 viewport={{ once: true, amount: 0.4 }}
-                transition={shouldReduceMotion ? { duration: 0.2 } : { type: "spring", stiffness: 260, damping: 20 }}
-                className="w-16 h-16 rounded-full bg-primary text-white flex items-center justify-center shadow-lg shrink-0 z-10"
+                whileHover={shouldReduceMotion ? {} : { scale: 1.15, rotate: -12 }}
+                transition={{ type: "spring", stiffness: 300 }}
+                className="w-16 h-16 rounded-full bg-primary text-white flex items-center justify-center shadow-lg shrink-0 z-10 group-hover:bg-saffron-glow group-hover:text-deep-forest transition-colors"
               >
                 <Users size={28} />
               </motion.div>
@@ -930,10 +959,11 @@ export default function EventsPage() {
                 initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.6, delay: 0.15, ease: "easeOut" }}
-                className="bg-white p-6 rounded-2xl shadow-sm border border-[#D9CBB0]/60 flex-1 md:text-right"
+                whileHover={shouldReduceMotion ? {} : { scale: 1.03, y: -4 }}
+                transition={{ duration: 0.3 }}
+                className="bg-white p-6 rounded-2xl shadow-sm hover:shadow-xl border border-[#D9CBB0]/60 flex-1 md:text-right transition-shadow"
               >
-                <h3 className="font-headline-sm text-lg font-bold text-deep-forest mb-1">2. Community-Centered</h3>
+                <h3 className="font-headline-sm text-lg font-bold text-deep-forest mb-1 group-hover:text-primary transition-colors">2. Community-Centered</h3>
                 <p className="font-body-sm text-xs sm:text-sm text-on-surface-variant leading-relaxed">
                   Our drives are tailored directly around real beneficiary needs—from remote mountain tribal hamlets to underserved urban neighborhoods.
                 </p>
@@ -959,13 +989,14 @@ export default function EventsPage() {
             </div>
 
             {/* Feature 3 (Left) */}
-            <div className="relative flex flex-col md:flex-row items-center justify-start gap-6 md:w-2/3 ml-0">
+            <div className="relative flex flex-col md:flex-row items-center justify-start gap-6 md:w-2/3 ml-0 group cursor-pointer">
               <motion.div 
                 initial={{ scale: shouldReduceMotion ? 1 : 0 }}
                 whileInView={{ scale: 1 }}
                 viewport={{ once: true, amount: 0.4 }}
-                transition={shouldReduceMotion ? { duration: 0.2 } : { type: "spring", stiffness: 260, damping: 20 }}
-                className="w-16 h-16 rounded-full bg-primary text-white flex items-center justify-center shadow-lg shrink-0 z-10"
+                whileHover={shouldReduceMotion ? {} : { scale: 1.15, rotate: 12 }}
+                transition={{ type: "spring", stiffness: 300 }}
+                className="w-16 h-16 rounded-full bg-primary text-white flex items-center justify-center shadow-lg shrink-0 z-10 group-hover:bg-saffron-glow group-hover:text-deep-forest transition-colors"
               >
                 <ShieldCheck size={28} />
               </motion.div>
@@ -973,10 +1004,11 @@ export default function EventsPage() {
                 initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.6, delay: 0.15, ease: "easeOut" }}
-                className="bg-white p-6 rounded-2xl shadow-sm border border-[#D9CBB0]/60 flex-1"
+                whileHover={shouldReduceMotion ? {} : { scale: 1.03, y: -4 }}
+                transition={{ duration: 0.3 }}
+                className="bg-white p-6 rounded-2xl shadow-sm hover:shadow-xl border border-[#D9CBB0]/60 flex-1 transition-shadow"
               >
-                <h3 className="font-headline-sm text-lg font-bold text-deep-forest mb-1">3. Transparent & Registered</h3>
+                <h3 className="font-headline-sm text-lg font-bold text-deep-forest mb-1 group-hover:text-primary transition-colors">3. Transparent & Registered</h3>
                 <p className="font-body-sm text-xs sm:text-sm text-on-surface-variant leading-relaxed">
                   Fully compliant under the Indian Trust Act with verified 80G tax benefits, CSR eligibility, and NITI Aayog NGO-Darpan registry.
                 </p>
@@ -1002,13 +1034,14 @@ export default function EventsPage() {
             </div>
 
             {/* Feature 4 (Right) */}
-            <div className="relative flex flex-col md:flex-row-reverse items-center justify-start gap-6 md:w-2/3 md:ml-auto">
+            <div className="relative flex flex-col md:flex-row-reverse items-center justify-start gap-6 md:w-2/3 md:ml-auto group cursor-pointer">
               <motion.div 
                 initial={{ scale: shouldReduceMotion ? 1 : 0 }}
                 whileInView={{ scale: 1 }}
                 viewport={{ once: true, amount: 0.4 }}
-                transition={shouldReduceMotion ? { duration: 0.2 } : { type: "spring", stiffness: 260, damping: 20 }}
-                className="w-16 h-16 rounded-full bg-primary text-white flex items-center justify-center shadow-lg shrink-0 z-10"
+                whileHover={shouldReduceMotion ? {} : { scale: 1.15, rotate: -12 }}
+                transition={{ type: "spring", stiffness: 300 }}
+                className="w-16 h-16 rounded-full bg-primary text-white flex items-center justify-center shadow-lg shrink-0 z-10 group-hover:bg-saffron-glow group-hover:text-deep-forest transition-colors"
               >
                 <Heart size={28} />
               </motion.div>
@@ -1016,10 +1049,11 @@ export default function EventsPage() {
                 initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.6, delay: 0.15, ease: "easeOut" }}
-                className="bg-white p-6 rounded-2xl shadow-sm border border-[#D9CBB0]/60 flex-1 md:text-right"
+                whileHover={shouldReduceMotion ? {} : { scale: 1.03, y: -4 }}
+                transition={{ duration: 0.3 }}
+                className="bg-white p-6 rounded-2xl shadow-sm hover:shadow-xl border border-[#D9CBB0]/60 flex-1 md:text-right transition-shadow"
               >
-                <h3 className="font-headline-sm text-lg font-bold text-deep-forest mb-1">4. Consistent Impact</h3>
+                <h3 className="font-headline-sm text-lg font-bold text-deep-forest mb-1 group-hover:text-primary transition-colors">4. Consistent Impact</h3>
                 <p className="font-body-sm text-xs sm:text-sm text-on-surface-variant leading-relaxed">
                   We maintain long-term relationships with communities rather than one-off photo opportunities, ensuring lasting socio-cultural elevation.
                 </p>
@@ -1055,17 +1089,20 @@ export default function EventsPage() {
         {/* Filter Bar */}
         <div className="flex flex-wrap items-center gap-2 pb-4">
           {["All", "Temple & Heritage", "Cultural & Spiritual", "Welfare Drives", "Awards & Recognition", "Children & Education", "Women's Empowerment"].map((tag) => (
-            <button
+            <motion.button
               key={tag}
+              whileHover={shouldReduceMotion ? {} : { scale: 1.05 }}
+              whileTap={shouldReduceMotion ? {} : { scale: 0.95 }}
+              transition={{ type: "spring", stiffness: 400 }}
               onClick={() => setActiveCategoryFilter(tag)}
-              className={`px-4 py-1.5 rounded-full text-xs font-label-md font-semibold transition-all cursor-pointer ${
+              className={`px-4 py-1.5 rounded-full text-xs font-label-md font-semibold transition-colors cursor-pointer ${
                 activeCategoryFilter === tag 
-                  ? "bg-primary text-white shadow-sm" 
-                  : "bg-white border border-[#D9CBB0]/80 text-on-surface-variant hover:border-primary hover:text-primary"
+                  ? "bg-primary text-white shadow-md" 
+                  : "bg-white border border-[#D9CBB0]/80 text-on-surface-variant hover:border-primary hover:text-primary hover:shadow-sm"
               }`}
             >
               {tag === "All" ? "All Categories" : tag}
-            </button>
+            </motion.button>
           ))}
         </div>
 
@@ -1084,14 +1121,24 @@ export default function EventsPage() {
                 initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.15 }}
+                whileHover={shouldReduceMotion ? {} : { scale: 1.02, y: -6 }}
                 transition={{ duration: 0.5, delay: idx * 0.1, ease: "easeOut" }}
-                className="bg-white rounded-3xl border border-[#D9CBB0]/60 overflow-hidden shadow-md flex flex-col sm:flex-row group"
+                className="bg-white rounded-3xl border border-[#D9CBB0]/60 overflow-hidden shadow-md hover:shadow-2xl transition-shadow flex flex-col sm:flex-row group cursor-pointer"
               >
                 <div className="sm:w-2/5 h-56 sm:h-auto relative overflow-hidden bg-surface-container shrink-0">
-                  <img src={ev.img} alt={ev.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                  <div className="absolute top-3 left-3 bg-deep-forest text-saffron-glow px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider">
+                  <motion.img 
+                    variants={{ hover: { scale: shouldReduceMotion ? 1 : 1.08 } }}
+                    transition={{ duration: 0.4, ease: "easeOut" }}
+                    src={ev.img} 
+                    alt={ev.title} 
+                    className="w-full h-full object-cover" 
+                  />
+                  <motion.div 
+                    whileHover={{ scale: 1.08 }}
+                    className="absolute top-3 left-3 bg-deep-forest text-saffron-glow px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider shadow"
+                  >
                     {ev.category}
-                  </div>
+                  </motion.div>
                 </div>
 
                 <div className="p-6 flex flex-col justify-between flex-1 space-y-6">
@@ -1120,10 +1167,10 @@ export default function EventsPage() {
                         href={ev.mapsUrl} 
                         target="_blank" 
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 text-xs font-medium text-deep-forest underline hover:text-primary transition-colors"
+                        className="inline-flex items-center gap-1 text-xs font-medium text-deep-forest hover:text-primary transition-colors"
                       >
                         <MapPin size={13} className="text-primary" />
-                        <span className="line-clamp-1">{ev.location}</span>
+                        <span className="line-clamp-1 underline">{ev.location}</span>
                         <ExternalLink size={11} />
                       </a>
                     </div>

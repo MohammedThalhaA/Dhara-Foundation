@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { ScrollReveal, RevealItem } from "@/components/motion/ScrollReveal";
 import { ParallaxBg } from "@/components/motion/ParallaxBg";
@@ -35,76 +35,174 @@ const HOME_GALLERY = [
   },
 ];
 
+const PREVIEW_SLIDES = [
+  { src: "/images/gallery-1.png", label: "Spiritual Ceremony" },
+  { src: "/images/gallery-2.png", label: "Temple Restoration" },
+  { src: "/images/gallery-3.png", label: "Community Welfare" },
+  { src: "/images/about.png", label: "Devotional Offering" },
+];
+
 export default function HomePage() {
   const [activeModalItem, setActiveModalItem] = useState<(typeof HOME_GALLERY)[0] | null>(null);
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % PREVIEW_SLIDES.length);
+    }, 4000);
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <div className="relative w-full overflow-hidden bg-background text-on-background">
-      {/* Section 1: Hero Card (Sacred Flow Rebrand) */}
-      <section className="relative pt-8 pb-16 px-4 md:px-8 max-w-[1440px] mx-auto min-h-[85vh] flex items-center justify-center">
-        <div className="w-full h-full min-h-[760px] rounded-[36px] overflow-hidden relative shadow-2xl flex flex-col justify-end pb-12 px-6 sm:px-12 md:px-16 text-ethereal-white border border-outline-variant/20">
-          {/* Background Photo with Multiply Overlay */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/images/banner.png"
-            alt="Dhara Foundations Hero Banner"
-            className="absolute inset-0 w-full h-full object-cover object-center scale-105 animate-pulse-slow"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-deep-forest via-deep-forest/60 to-transparent mix-blend-multiply" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+      {/* Section 1: Cinematic Full-Bleed Hero Section */}
+      <section className="relative pt-28 sm:pt-32 pb-16 w-full min-h-screen flex items-stretch overflow-hidden bg-[#0f3443] text-white">
+        
+        {/* Main Background Photo */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/images/banner.png"
+          alt="Dhara Foundations Community Gathering"
+          className="absolute inset-0 w-full h-full object-cover scale-[1.12] z-0 transition-transform duration-1000"
+          style={{ objectFit: "cover", objectPosition: "center 15%" }}
+        />
 
-          {/* Giant Background Watermark */}
-          <div className="absolute z-0 font-display-lg text-[18vw] font-bold text-ethereal-white/5 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 leading-none pointer-events-none select-none tracking-widest">
+        {/* Giant Ghost Headline (Option B: Depth & Blend Mode effect) */}
+        <div 
+          className="absolute inset-0 flex items-center justify-center pointer-events-none select-none z-[1] overflow-hidden"
+          aria-hidden="true"
+        >
+          <span 
+            className="font-headline-md font-bold text-white/25 mix-blend-overlay tracking-[0.1em] leading-none text-center"
+            style={{ fontSize: "clamp(64px, 16vw, 180px)" }}
+          >
             DHARMA
+          </span>
+        </div>
+
+        {/* Bottom-heavy Dark Gradient Overlay using brand gradient #0f3443 */}
+        <div 
+          className="absolute inset-0 z-[2] pointer-events-none"
+          style={{
+            background: "linear-gradient(to bottom, rgba(15, 52, 67, 0.3) 0%, rgba(15, 52, 67, 0.85) 100%)"
+          }}
+        />
+
+        {/* Hero Content Area */}
+        <div className="relative z-10 w-full max-w-[1440px] mx-auto flex flex-col justify-end gap-10 sm:gap-12 px-6 sm:px-12 md:px-16 mt-auto">
+          
+          {/* Top Main Heading */}
+          <div className="max-w-3xl space-y-4">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-saffron-glow text-xs font-label-lg uppercase tracking-widest shadow-sm">
+              <span>Dhara Divine Trust Portal</span>
+            </div>
+            <h1 className="font-headline-md text-4xl sm:text-6xl lg:text-7xl font-bold text-white tracking-tight leading-[1.1] drop-shadow-md">
+              Transforming Lives, <br />
+              <span className="text-saffron-glow font-light italic">Preserving Traditions.</span>
+            </h1>
           </div>
 
-          {/* Hero Content */}
-          <div className="relative z-10 w-full flex flex-col lg:flex-row justify-between items-end gap-12">
-            <div className="max-w-3xl space-y-6">
-              <span className="inline-block px-5 py-2 rounded-full bg-saffron-glow/20 text-saffron-glow font-label-lg uppercase tracking-widest border border-saffron-glow/40 backdrop-blur-md shadow-lg">
-                Dhara Divine Trust Portal
-              </span>
-              <h1 className="font-display-lg-mobile md:text-6xl lg:text-7xl font-bold text-ethereal-white leading-tight drop-shadow-md">
-                Transforming Lives, <br />
-                <span className="text-saffron-glow italic font-light">Preserving Traditions.</span>
-              </h1>
-              <p className="font-body-lg text-surface-container-high max-w-2xl opacity-90 leading-relaxed text-lg">
-                Empowering tribal communities through spiritual heritage, education, and sustainable welfare development across generations.
-              </p>
-              <div className="pt-2 flex flex-wrap gap-4">
-                <Link
-                  href="/about"
-                  className="bg-saffron-glow text-deep-forest px-8 py-4 rounded-full font-label-lg font-bold uppercase tracking-wider hover:bg-ethereal-white transition-all shadow-lg flex items-center gap-2 group cursor-pointer"
-                >
-                  Discover Our Mission
-                  <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
-                </Link>
-                <Link
-                  href="/contact"
-                  className="bg-ethereal-white/10 hover:bg-ethereal-white/20 text-ethereal-white border border-ethereal-white/30 px-8 py-4 rounded-full font-label-lg font-semibold backdrop-blur-md transition-all cursor-pointer"
-                >
-                  Get Involved
-                </Link>
+          {/* Bottom Row Layout: Stat Row + CTA (Left) and Floating Preview Card (Right) */}
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-10 lg:gap-12 w-full pt-6 border-t border-white/15">
+            
+            {/* STAT ROW + CTA (bottom-left) */}
+            <div className="flex flex-col gap-8 lg:max-w-xl xl:max-w-2xl">
+              
+              {/* Three Stat Blocks */}
+              <div className="grid grid-cols-3 gap-4 sm:gap-8 pt-1">
+                <div>
+                  <div className="font-headline-md text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight">
+                    25+
+                  </div>
+                  <div className="font-body-sm text-xs sm:text-sm text-white/75 mt-1 font-medium leading-snug">
+                    Years of Seva {/* [CLIENT TO CONFIRM] */}
+                  </div>
+                </div>
+                <div className="border-l border-white/20 pl-4 sm:pl-8">
+                  <div className="font-headline-md text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight">
+                    10k+
+                  </div>
+                  <div className="font-body-sm text-xs sm:text-sm text-white/75 mt-1 font-medium leading-snug">
+                    Beneficiaries {/* [CLIENT TO CONFIRM] */}
+                  </div>
+                </div>
+                <div className="border-l border-white/20 pl-4 sm:pl-8">
+                  <div className="font-headline-md text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight">
+                    50+
+                  </div>
+                  <div className="font-body-sm text-xs sm:text-sm text-white/75 mt-1 font-medium leading-snug">
+                    Temples Restored {/* [CLIENT TO CONFIRM] */}
+                  </div>
+                </div>
+              </div>
+
+              {/* Pill CTA Button + Circular Arrow Button + Supporting Sentence */}
+              <div className="flex flex-col sm:flex-row sm:items-center gap-5 pt-1">
+                <div className="flex items-center gap-3 shrink-0">
+                  <Link
+                    href="/contact"
+                    className="px-8 py-3.5 rounded-full bg-white text-[#0f3443] hover:bg-saffron-glow font-label-lg font-bold text-sm sm:text-base tracking-wide transition-all shadow-lg hover:shadow-xl active:scale-95"
+                  >
+                    Get Involved
+                  </Link>
+                  <Link
+                    href="/about"
+                    aria-label="Discover our mission"
+                    className="w-12 h-12 rounded-full border border-white/40 hover:border-white bg-white/5 hover:bg-white/15 text-white flex items-center justify-center transition-all shrink-0 group"
+                  >
+                    <span className="material-symbols-outlined text-xl group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform">
+                      arrow_outward
+                    </span>
+                  </Link>
+                </div>
+                <p className="text-white/80 text-xs sm:text-sm font-body-sm leading-relaxed max-w-xs sm:max-w-sm">
+                  Building stronger communities through compassion and cultural preservation.
+                </p>
               </div>
             </div>
 
-            {/* Stats & Latest Initiative Box */}
-            <div className="w-full lg:w-auto flex flex-col sm:flex-row items-end gap-6 shrink-0">
-              <div className="grid grid-cols-3 gap-6 sm:gap-8 bg-black/40 backdrop-blur-xl p-6 rounded-3xl border border-ethereal-white/10 text-center w-full sm:w-auto">
-                <div>
-                  <div className="font-headline-md text-3xl md:text-4xl font-bold text-saffron-glow">25+</div>
-                  <div className="font-caption text-xs uppercase tracking-wider text-surface-container-high mt-1">Years Active</div>
+            {/* FLOATING PREVIEW CARD (bottom-right) */}
+            <div className="w-full sm:w-80 shrink-0 self-start lg:self-end bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-4 shadow-2xl relative overflow-hidden group">
+              <div className="relative h-44 sm:h-48 w-full rounded-2xl overflow-hidden bg-black/40 mb-3">
+                {PREVIEW_SLIDES.map((slide, idx) => (
+                  /* eslint-disable-next-line @next/next/no-img-element */
+                  <img
+                    key={slide.src}
+                    src={slide.src}
+                    alt={slide.label}
+                    className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${
+                      idx === currentSlide ? "opacity-100 scale-105" : "opacity-0 scale-100"
+                    }`}
+                  />
+                ))}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60" />
+                <div className="absolute bottom-3 left-3 right-3 flex justify-between items-end text-xs font-label-lg tracking-wider text-white">
+                  <span className="drop-shadow-md font-semibold">
+                    {PREVIEW_SLIDES[currentSlide].label}
+                  </span>
                 </div>
-                <div className="border-x border-ethereal-white/10 px-4">
-                  <div className="font-headline-md text-3xl md:text-4xl font-bold text-saffron-glow">10k</div>
-                  <div className="font-caption text-xs uppercase tracking-wider text-surface-container-high mt-1">Lives Touched</div>
-                </div>
-                <div>
-                  <div className="font-headline-md text-3xl md:text-4xl font-bold text-saffron-glow">50</div>
-                  <div className="font-caption text-xs uppercase tracking-wider text-surface-container-high mt-1">Temples Saved</div>
+              </div>
+
+              {/* Slide Counter & Progress Dots */}
+              <div className="flex items-center justify-between px-1">
+                <span className="font-label-lg text-xs font-bold tracking-widest text-white/90">
+                  {String(currentSlide + 1).padStart(2, "0")}/{String(PREVIEW_SLIDES.length).padStart(2, "0")}
+                </span>
+                <div className="flex items-center gap-1.5">
+                  {PREVIEW_SLIDES.map((_, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => setCurrentSlide(idx)}
+                      aria-label={`Go to slide ${idx + 1}`}
+                      className={`h-1.5 rounded-full transition-all duration-300 ${
+                        idx === currentSlide ? "w-6 bg-white" : "w-1.5 bg-white/30 hover:bg-white/50"
+                      }`}
+                    />
+                  ))}
                 </div>
               </div>
             </div>
+
           </div>
         </div>
       </section>
