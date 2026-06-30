@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
@@ -72,10 +72,41 @@ const NAV_LINKS: NavLink[] = [
 
 export function Header() {
   const pathname = usePathname();
+  const navRef = useRef<HTMLElement>(null);
+  const [indicatorStyle, setIndicatorStyle] = useState<{ left: number; width: number; height: number; opacity: number }>({
+    left: 0,
+    width: 0,
+    height: 0,
+    opacity: 0,
+  });
   const [isScrolled, setIsScrolled] = useState(false);
   const [isScrolledPastHero, setIsScrolledPastHero] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [hoveredDropdown, setHoveredDropdown] = useState<string | null>(null);
+
+  useEffect(() => {
+    const updateIndicator = () => {
+      if (!navRef.current) return;
+      const activeElement = navRef.current.querySelector(`[data-nav-active="true"]`) as HTMLElement;
+      if (activeElement) {
+        setIndicatorStyle({
+          left: activeElement.offsetLeft,
+          width: activeElement.offsetWidth,
+          height: activeElement.offsetHeight,
+          opacity: 1,
+        });
+      } else {
+        setIndicatorStyle((prev) => ({ ...prev, opacity: 0 }));
+      }
+    };
+    updateIndicator();
+    window.addEventListener("resize", updateIndicator);
+    const timer = setTimeout(updateIndicator, 50);
+    return () => {
+      window.removeEventListener("resize", updateIndicator);
+      clearTimeout(timer);
+    };
+  }, [pathname]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -132,7 +163,7 @@ export function Header() {
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden lg:flex items-center gap-0.5 xl:gap-1.5">
+        <nav ref={navRef} className="hidden lg:flex items-center gap-0.5 xl:gap-1.5 relative">
           {NAV_LINKS.map((link) => {
             const isTopActive =
               pathname === link.href ||
@@ -142,6 +173,7 @@ export function Header() {
               return (
                 <div
                   key={link.label}
+                  data-nav-active={isTopActive ? "true" : "false"}
                   className="relative py-1 group/drop"
                   onMouseEnter={() => setHoveredDropdown(link.label)}
                   onMouseLeave={() => setHoveredDropdown(null)}
@@ -162,24 +194,6 @@ export function Header() {
                     <span className="material-symbols-outlined text-sm transition-transform duration-300 group-hover/drop:rotate-180">
                       expand_more
                     </span>
-                    {isTopActive && (
-                      <motion.div
-                        layoutId="lamp-desktop"
-                        className="absolute inset-0 w-full bg-primary/5 dark:bg-saffron-glow/5 rounded-full -z-10"
-                        initial={false}
-                        transition={{
-                          type: "spring",
-                          stiffness: 300,
-                          damping: 30,
-                        }}
-                      >
-                        <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 w-8 h-1 bg-primary dark:bg-saffron-glow rounded-t-full">
-                          <div className="absolute w-12 h-6 bg-primary/30 dark:bg-saffron-glow/30 rounded-full blur-md -top-2 -left-2" />
-                          <div className="absolute w-8 h-6 bg-primary/30 dark:bg-saffron-glow/30 rounded-full blur-md -top-1" />
-                          <div className="absolute w-4 h-4 bg-primary/30 dark:bg-saffron-glow/30 rounded-full blur-sm top-0 left-2" />
-                        </div>
-                      </motion.div>
-                    )}
                   </Link>
 
                   <AnimatePresence>
@@ -224,6 +238,7 @@ export function Header() {
             return (
               <div
                 key={link.href}
+                data-nav-active={isTopActive ? "true" : "false"}
                 className="relative py-1 group/item"
                 onMouseEnter={() => setHoveredDropdown(link.label)}
                 onMouseLeave={() => setHoveredDropdown(null)}
@@ -241,24 +256,6 @@ export function Header() {
                   }`}
                 >
                   {link.label}
-                  {isTopActive && (
-                    <motion.div
-                      layoutId="lamp-desktop"
-                      className="absolute inset-0 w-full bg-primary/5 dark:bg-saffron-glow/5 rounded-full -z-10"
-                      initial={false}
-                      transition={{
-                        type: "spring",
-                        stiffness: 300,
-                        damping: 30,
-                      }}
-                    >
-                      <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 w-8 h-1 bg-primary dark:bg-saffron-glow rounded-t-full">
-                        <div className="absolute w-12 h-6 bg-primary/30 dark:bg-saffron-glow/30 rounded-full blur-md -top-2 -left-2" />
-                        <div className="absolute w-8 h-6 bg-primary/30 dark:bg-saffron-glow/30 rounded-full blur-md -top-1" />
-                        <div className="absolute w-4 h-4 bg-primary/30 dark:bg-saffron-glow/30 rounded-full blur-sm top-0 left-2" />
-                      </div>
-                    </motion.div>
-                  )}
                 </Link>
 
                 <AnimatePresence>
@@ -290,6 +287,29 @@ export function Header() {
               </div>
             );
           })}
+
+          {/* Single Sliding Horizontal Active Indicator */}
+          <motion.div
+            className="absolute top-1/2 -translate-y-1/2 rounded-full bg-primary/5 dark:bg-saffron-glow/5 pointer-events-none -z-10"
+            initial={false}
+            animate={{
+              left: indicatorStyle.left,
+              width: indicatorStyle.width,
+              height: indicatorStyle.height || 32,
+              opacity: indicatorStyle.opacity,
+            }}
+            transition={{
+              type: "spring",
+              stiffness: 380,
+              damping: 32,
+            }}
+          >
+            <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 w-8 h-1 bg-primary dark:bg-saffron-glow rounded-t-full">
+              <div className="absolute w-12 h-6 bg-primary/30 dark:bg-saffron-glow/30 rounded-full blur-md -top-2 -left-2" />
+              <div className="absolute w-8 h-6 bg-primary/30 dark:bg-saffron-glow/30 rounded-full blur-md -top-1" />
+              <div className="absolute w-4 h-4 bg-primary/30 dark:bg-saffron-glow/30 rounded-full blur-sm top-0 left-2" />
+            </div>
+          </motion.div>
         </nav>
 
         {/* Donate Now CTA */}

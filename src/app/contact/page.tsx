@@ -227,7 +227,7 @@ export default function ContactPage() {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="px-10 py-4 bg-deep-forest dark:bg-primary text-white rounded-xl font-title font-medium shadow-md hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-3 disabled:opacity-70 disabled:pointer-events-none cursor-pointer text-base select-none min-w-[180px]"
+                    className="px-10 py-4 bg-gradient-to-r from-primary to-amber-600 dark:from-saffron-glow dark:to-amber-500 text-ethereal-white dark:text-deep-forest rounded-full font-label-lg font-bold shadow-md hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-3 disabled:opacity-70 disabled:pointer-events-none cursor-pointer text-base select-none min-w-[180px]"
                   >
                     <span>{isSubmitting ? "Submitting..." : "Submit"}</span>
                     <span className={`material-symbols-outlined text-xl ${isSubmitting ? "animate-spin" : ""}`} style={{ fontVariationSettings: "'FILL' 1" }}>
@@ -239,13 +239,10 @@ export default function ContactPage() {
             )}
           </ScrollReveal>
 
-          {/* RIGHT COLUMN: Layered Editorial Photo Collage (lg:col-span-6) */}
+          {/* RIGHT COLUMN: Editorial Photo (lg:col-span-6) */}
           <ScrollReveal direction="left" className="lg:col-span-6 relative flex justify-end">
-            {/* Dark background panel breaking out behind top-right of photo matching reference */}
-            <div className="absolute -top-8 -right-4 sm:-right-8 lg:-right-12 w-4/5 h-2/3 bg-deep-forest dark:bg-deep-forest/80 rounded-3xl -z-10 shadow-lg" />
-            
             {/* Main architectural/heritage photo */}
-            <div className="relative w-full lg:w-[92%] h-[400px] sm:h-[500px] rounded-3xl overflow-hidden shadow-2xl border border-outline-variant/30 bg-surface-container group">
+            <div className="relative w-full h-[400px] sm:h-[500px] rounded-3xl overflow-hidden shadow-2xl border border-outline-variant/30 bg-surface-container group">
               {/* [CLIENT TO SUPPLY OFFICE PHOTO] */}
               <img
                 src="/images/about.png"
