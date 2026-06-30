@@ -202,3 +202,44 @@ p, li, input, textarea {
     display: none !important;
   }
 }
+
+/* Deep Forest Emerald Gradient Scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #24695c transparent;
+}
+
+.dark * {
+  scrollbar-color: #acf0df transparent;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #2b7a6c 0%, #24695c 50%, #174b41 100%);
+  border-radius: 9999px;
+  box-shadow: inset 0 0 2px rgba(255, 255, 255, 0.2);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #acf0df 0%, #48b8a1 50%, #24695c 100%);
+  border-radius: 9999px;
+  box-shadow: inset 0 0 2px rgba(255, 255, 255, 0.2);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #3bb39d 0%, #2b7a6c 50%, #1c5e52 100%);
+  box-shadow: 0 0 10px rgba(36, 105, 92, 0.5);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #ffffff 0%, #acf0df 50%, #48b8a1 100%);
+  box-shadow: 0 0 12px rgba(172, 240, 223, 0.6);
+}

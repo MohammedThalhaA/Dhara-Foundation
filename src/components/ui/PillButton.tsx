@@ -5,7 +5,7 @@ interface PillButtonProps {
   children: React.ReactNode;
   href?: string;
   onClick?: () => void;
-  variant?: "primary" | "secondary" | "ghost";
+  variant?: "primary" | "secondary" | "ghost" | "hero-secondary";
   className?: string;
   type?: "button" | "submit" | "reset";
   disabled?: boolean;
@@ -30,6 +30,8 @@ export function PillButton({
       "px-8 py-4 bg-primary text-on-primary hover:opacity-90 hover:scale-105 hover:shadow-lg border border-transparent",
     secondary:
       "px-8 py-4 bg-transparent text-primary dark:text-saffron-glow border-2 border-primary dark:border-saffron-glow hover:bg-primary hover:text-on-primary dark:hover:bg-saffron-glow dark:hover:text-deep-forest hover:scale-105",
+    "hero-secondary":
+      "px-8 py-4 bg-white/10 hover:bg-white text-white hover:text-deep-forest border-2 border-white/80 hover:border-white backdrop-blur-md hover:scale-105 shadow-lg font-bold",
     ghost:
       "px-6 py-2.5 bg-saffron-glow/20 text-on-surface hover:bg-saffron-glow/40 hover:scale-105",
   };

@@ -35,7 +35,7 @@ export default function PartnershipPage() {
             <PillButton href="#partner-tiers" variant="primary" className="!px-8 !py-4 !text-base">
               Explore Tiers
             </PillButton>
-            <PillButton href="/contact" variant="secondary" className="!px-8 !py-4 !text-base">
+            <PillButton href="/contact" variant="hero-secondary" className="!px-8 !py-4 !text-base">
               Contact Us
             </PillButton>
           </div>
